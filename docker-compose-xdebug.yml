@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  nginx:
+    image: nginx:alpine
+    ports:
+      - '8001:80'
+    volumes:
+      - ./:/var/www
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./docker/nginx/conf.d/xdebug.conf:/etc/nginx/conf.d/default.conf
+      - ./docker/nginx/sites:/etc/nginx/sites-available
+    networks:
+      - concr-laravel-app-network
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile-xdebug
+    container_name: concr-laravel-app-xdebug
+    volumes:
+      - ./:/var/www
+    networks:
+      - concr-laravel-app-network
+networks:
+  concr-laravel-app-network:
+    driver: bridge

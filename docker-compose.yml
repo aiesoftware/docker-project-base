@@ -1,0 +1,61 @@
+version: '3'
+services:
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: digitalocean.com/php
+    container_name: project-name-app
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - ./:/var/www
+      - ./docker/php-fpm/local.ini:/usr/local/etc/php/conf.d/local.ini
+    environment:
+      SERVICE_NAME: app
+      SERVICE_TAGS: dev
+    networks:
+      - project-name-app-network
+
+  webserver:
+    image: nginx:alpine
+    container_name: project-name-webserver
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - ./:/var/www
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./docker/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
+      - ./docker/nginx/sites:/etc/nginx/sites-available
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - project-name-app-network
+
+  db:
+    image: mysql:5.7.22
+    container_name: project-name-db
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "3310:3306"
+    environment:
+      MYSQL_DATABASE: laravel
+      MYSQL_ROOT_PASSWORD: laravel
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - dbdata:/var/lib/mysql
+      - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
+    networks:
+      - project-name-app-network
+
+networks:
+  project-name-app-network:
+    driver: bridge
+
+volumes:
+  dbdata:
+    driver: local
