@@ -9,7 +9,7 @@ services:
       - .:/app
     entrypoint: composer
 
-  phpunit:
+  unit_tests:
     build:
       context: ./docker/phpunit
       dockerfile: Dockerfile

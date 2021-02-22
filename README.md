@@ -1,24 +1,15 @@
-Create your new Symfony / Laravel project directoy:
+Base docker configuration for Symfony / Laravel projects. 
 
-Laravel:
-```
-$ git clone https://github.com/laravel/laravel.git <project-name>
-```
+Copy all docker files (including `docker/` folder) into project.
 
-Symfony:
-```
-todo
-```
-
-Copy and paste the following files from this repo, into the new project directory:
+Available commands:
 
 ```
-docker/
-docker-compose.yml
-docker-compose-cmd.yml
-docker-compose-xdebug.yml
-Dockerfile
-Dockerfile-xdebug
+Run the app (access on 127.0.0.1:80)           | docker-compose up
+Run the app in xdebug (access on 127.0.0.8001) | docker-compose -f docker-compose-xdebug.yml up
+Run composer                                   | docker-compose -f docker-compose-cmd.yml composer <install|update|require>
+Run tests                                      | docker-compose -f docker-compose-cmd.yml run tests
 ```
+
 
 

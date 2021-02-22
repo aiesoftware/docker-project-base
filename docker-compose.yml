@@ -23,6 +23,8 @@ services:
     container_name: project-name-webserver
     restart: unless-stopped
     tty: true
+    env_file:
+      - ./.env
     volumes:
       - ./:/var/www
       - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
