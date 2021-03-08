@@ -1,18 +1,23 @@
 version: '3.8'
 services:
+#  If composer image needs extra libs, copy in docker/composer and use this
+#  composer:
+#    build:
+#      context: ./docker/composer
+#      dockerfile: Dockerfile
+#    working_dir: /app
+#    volumes:
+#      - .:/app
+#    entrypoint: composer
+
   composer:
-    build:
-      context: ./docker/composer
-      dockerfile: Dockerfile
+    image: composer
     working_dir: /app
     volumes:
       - .:/app
-    entrypoint: composer
 
-  unit_tests:
-    build:
-      context: ./docker/phpunit
-      dockerfile: Dockerfile
+  tests_unit:
+    image: php:7.4-cli
     volumes:
       - .:/app
     working_dir: /app
